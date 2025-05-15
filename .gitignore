@@ -1,0 +1,15 @@
+# wandb folder
+wandb/
+
+# PyTorch checkpoints
+models/
+
+# Deleted project for loading weights from huggingface
+hugging_deleted_project/
+
+# hydra logs
+logs/
+
+# Dataset
+data/
+

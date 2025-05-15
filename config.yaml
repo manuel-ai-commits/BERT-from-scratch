@@ -1,0 +1,86 @@
+### SEACH FOR "..." on every file to see where you need to add your code ###
+
+seed: 42
+device: "mps"  # cpu or cuda
+overwrite: True
+save: True
+
+pretraining: True # If false, it goes into fine-tuning mode
+
+
+fine_tune:
+  task: "classification"
+  num_classes: 2
+  pretrained_weights_path: "./models/pretrained.bin"  # "bert-base-uncased" or "bert-large-uncased"
+  freeze_bert: True  # Set to true to freeze the BERT model, and train only the downstream task
+  vocab_path:  # Path to the vocabulary like "./vocab/". if left empty use the vocabulary used for pretraining
+
+input:
+  # For downloading the dataset from HuggingFace
+  dataset_path: data
+  dataset_name: "wikipedia"  # "wikipedia" or "quora"
+  dataset_version: "20220301.en" # if present
+  train_split: "90%"  # "train" or "test"
+
+  # For creating the vocabulary
+  vocab_path: vocab
+  dataset_vocab: "wikipedia"  # "wikipedia_en"
+  vocab_size: 30522
+  encoding: "utf-8"  # Encoding of the dataset
+  min_freq: 1
+
+  seq_len: 30
+  batch_size: 100
+  train_corpus_lines: 100000  # Number of lines to use for training, if left empty it will use the entire dataset 
+  test_corpus_lines: 1000  # Number of lines to use for testing, if left empty it will use the entire dataset
+  on_memory: True  # Set to true to load the dataset into memory for faster training.
+
+model:
+  
+  # Embeddings
+  dropout_embed: 0.1
+
+  # BERT
+  d_model: 768
+  n_layers: 12
+  n_heads: 12
+  dropout_enc: 0
+
+
+
+  # Feed Forward
+  d_ff: 3072
+  dropout_ff: 0.1
+
+  # residual connection
+  dropout_rescon: 0.1
+
+  #Layer norm
+  eps: 10e-6
+  
+
+  
+
+training:
+  num_workers: 6
+  epochs: 5
+
+  optimizer: "Adam"  # "Adam" or "SGD"
+  learning_rate: 1e-4
+  weight_decay: 3e-4
+  momentum: 0.9
+  betas: [0.9, 0.999]
+
+  downstream_learning_rate: 1e-2
+  downstream_weight_decay: 3e-3
+
+  val_idx: -1  # -1: validate only once training has finished; n: validate every n epochs.
+  final_test: True  # Set to true to evaluate performance on test-set.
+
+
+hydra:
+  run:
+    dir: logs
+
+
+
