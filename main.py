@@ -106,7 +106,7 @@ def my_main(opt: DictConfig) -> None:
     # Parse arguments and initialize the Wandb run
     opt = utils.parse_args(opt)
     run = wandb.init(
-        project="BERT",
+        project=opt.project_name,  # Name of the project in Wandb
         name=set_run_name(opt),  # Wandb creates random run names if you skip this field
         reinit=False,  # Allows reinitializing runs when you re-run this cell
         config=dict(opt)  # Wandb Config for your run

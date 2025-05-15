@@ -2,6 +2,7 @@
 
 seed: 42
 device: "mps"  # cpu or cuda
+project_name: "BERT"  # Name of the project for wandb, IMPORTANT!
 overwrite: True
 save: True
 
